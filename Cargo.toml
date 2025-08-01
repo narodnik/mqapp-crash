@@ -7,7 +7,6 @@ homepage = "https://dark.fi"
 
 [dependencies]
 miniquad = { git = "https://github.com/not-fl3/miniquad" }
-#miniquad = { path = "/root/mq" }
 log = "0.4.27"
 glam = "0.29.2"
 simplelog = "0.12.2"

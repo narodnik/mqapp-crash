@@ -1,7 +1,7 @@
 .POSIX:
 
 apk:
-	podman run -v /home/narodnik/src/stuff/miniquad:/root/mq -v $(shell pwd):/root/app -w /root/app/ -t apk cargo quad-apk build
+	podman run -v $(shell pwd):/root/app -w /root/app/ -t apk cargo quad-apk build
 	$(MAKE) install-apk
 
 install-apk:

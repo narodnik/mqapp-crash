@@ -145,7 +145,7 @@ impl EventHandler for Stage {
 
 pub fn run_gui() {
     let mut conf = miniquad::conf::Conf {
-        window_title: "DarkFi".to_string(),
+        window_title: "MqApp".to_string(),
         high_dpi: true,
         ..Default::default()
     };
