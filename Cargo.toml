@@ -1,0 +1,33 @@
+[package]
+name = "mqapp-app"
+description = "MQ App"
+version = "0.1.0"
+edition = "2021"
+homepage = "https://dark.fi"
+
+[dependencies]
+miniquad = { git = "https://github.com/not-fl3/miniquad" }
+#miniquad = { path = "/root/mq" }
+log = "0.4.27"
+glam = "0.29.2"
+simplelog = "0.12.2"
+lazy_static = "1.5.0"
+
+[target.'cfg(target_os = "android")'.dependencies]
+android_logger = "0.13.3"
+
+[package.metadata.android.activity_attributes]
+"android:exported" = "true"
+
+[lints]
+workspace = true
+
+[workspace.lints.clippy]
+
+[package.metadata.android]
+package_name = "mqapp.mqapp-app"
+label = "MqApp"
+#res = "data/res"
+#icon = "@mipmap/ic_launcher"
+#assets = "assets"
+
