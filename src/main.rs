@@ -82,13 +82,16 @@ impl EventHandler for Stage {
     fn update(&mut self) {
         let elapsed = START.elapsed().as_secs();
 
+        // it doesnt crash when we swap the logic.
+        // crash only happens when creating vert buffer is delayed
+
         if self.vert.is_none() && elapsed >= 4 {
-            debug!("LFG!");
+        //if self.vert.is_none() {
+            debug!("LFG! vert");
             let verts = [
                 Vertex { pos: [0.0, 0.0], color: [1.0, 0.0, 0.0, 1.0], uv: [0.0, 0.0] },
                 Vertex { pos: [100.0, 0.0], color: [1.0, 0.0, 0.0, 1.0], uv: [0.0, 0.0] },
                 Vertex { pos: [0.0, 100.0], color: [1.0, 0.0, 0.0, 1.0], uv: [0.0, 0.0] },
-                Vertex { pos: [100.0, 100.0], color: [1.0, 0.0, 0.0, 1.0], uv: [0.0, 0.0] },
             ];
             self.vert = Some(self.ctx.new_buffer(
                 BufferType::VertexBuffer,
@@ -97,8 +100,10 @@ impl EventHandler for Stage {
             ));
         }
 
+        //if self.buff.is_none() && elapsed >= 4 {
         if self.buff.is_none() {
-            let idx = [0, 2, 1, 1, 2, 3];
+            debug!("LFG! idx");
+            let idx = [0, 2, 1];
             self.buff = Some(self.ctx.new_buffer(
                 BufferType::IndexBuffer,
                 BufferUsage::Immutable,
@@ -135,7 +140,7 @@ impl EventHandler for Stage {
                     images: vec![self.white_texture],
                 };
                 self.ctx.apply_bindings(&bindings);
-                self.ctx.draw(0, 6, 1);
+                self.ctx.draw(0, 3, 1);
             }
         }
 
