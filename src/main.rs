@@ -1,6 +1,6 @@
 use log::debug;
 use miniquad::{
-    conf, native::gl, window, Backend, Bindings, BlendFactor, BlendState, BlendValue, BufferLayout,
+    conf, native::gl, native::egl, window, Backend, Bindings, BlendFactor, BlendState, BlendValue, BufferLayout,
     BufferSource, BufferType, BufferUsage, Equation, EventHandler, KeyCode, KeyMods, MouseButton,
     PassAction, Pipeline, PipelineParams, RenderingBackend, ShaderMeta, ShaderSource, TouchPhase,
     UniformBlockLayout, UniformDesc, UniformType, VertexAttribute, VertexFormat,
@@ -25,6 +25,7 @@ pub struct Vertex {
 
 struct Stage {
     ctx: Box<dyn RenderingBackend>,
+    libegl: egl::LibEgl,
     buff: Option<u32>,
     vert: Option<u32>,
     fb: gl::GLuint,
@@ -161,8 +162,11 @@ impl Stage {
             gl::glGetIntegerv(gl::GL_FRAMEBUFFER_BINDING, &mut fb as *mut _ as *mut _);
         }
 
+        let mut libegl = egl::LibEgl::try_load().expect("Cant load LibEGL");
+
         Stage {
             ctx,
+            libegl,
             buff: None,
             vert: None,
             fb,
@@ -179,7 +183,9 @@ impl EventHandler for Stage {
     fn update(&mut self) {
         let elapsed = START.elapsed().as_secs();
 
-        if self.vert.is_none() && elapsed >= 4 {
+        let egl_ctx = unsafe { (self.libegl.eglGetCurrentContext)() };
+
+        if !egl_ctx.is_null() && self.vert.is_none() && elapsed >= 4 {
             debug!("LFG! vert");
             let verts = [
                 Vertex {
